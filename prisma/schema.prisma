@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Worker {
+  id            String    @id @default(cuid())
+  authId        String    @unique
+  fullName      String
+  phone         String    @unique
+  skillCategory String
+  serviceArea   String
+  bio           String?
+  idVerified    Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  jobs          Job[]
+  reviews       Review[]
+  payments      Payment[]
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  authId    String   @unique
+  fullName  String
+  phone     String   @unique
+  createdAt DateTime @default(now())
+  jobs      Job[]
+}
+
+model Job {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  price       Int
+  status      String    @default("pending")
+  client      Client    @relation(fields: [clientId], references: [id])
+  clientId    String
+  worker      Worker?   @relation(fields: [workerId], references: [id])
+  workerId    String?
+  contract    Contract?
+  payment     Payment?
+  review      Review?
+  createdAt   DateTime  @default(now())
+}
+
+model Contract {
+  id             String   @id @default(cuid())
+  job            Job      @relation(fields: [jobId], references: [id])
+  jobId          String   @unique
+  scope          String
+  agreedPrice    Int
+  signedByClient Boolean  @default(false)
+  signedByWorker Boolean  @default(false)
+  createdAt      DateTime @default(now())
+}
+
+model Payment {
+  id          String   @id @default(cuid())
+  job         Job      @relation(fields: [jobId], references: [id])
+  jobId       String   @unique
+  worker      Worker   @relation(fields: [workerId], references: [id])
+  workerId    String
+  amount      Int
+  platformFee Int
+  status      String   @default("held")
+  mpesaRef    String?
+  createdAt   DateTime @default(now())
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  job       Job      @relation(fields: [jobId], references: [id])
+  jobId     String   @unique
+  worker    Worker   @relation(fields: [workerId], references: [id])
+  workerId  String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+}

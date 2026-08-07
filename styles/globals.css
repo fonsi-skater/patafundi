@@ -1,0 +1,24 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-display: "Sora", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
+
+body {
+  @apply bg-offwhite text-ink font-body antialiased;
+}
+
+h1, h2, h3, h4 {
+  @apply font-display;
+}
+
+.section {
+  @apply px-6 md:px-16 py-16 md:py-24;
+}
+
+.input {
+  @apply w-full bg-white/5 border border-white/15 rounded-card px-4 py-2.5 text-white placeholder:text-white/30 text-sm outline-none focus:border-gold;
+}
