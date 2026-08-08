@@ -9,6 +9,7 @@ export async function GET(
     where: { id: params.id },
     include: {
       contract: true,
+      payment: true,
       client: { select: { id: true, authId: true, fullName: true } },
       worker: { select: { id: true, authId: true, fullName: true } },
     },

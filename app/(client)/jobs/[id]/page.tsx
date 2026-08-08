@@ -13,6 +13,9 @@ export default function JobContractPage() {
   const [loading, setLoading] = useState(true);
   const [signing, setSigning] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [payPhone, setPayPhone] = useState("");
+  const [paying, setPaying] = useState(false);
+  const [payMessage, setPayMessage] = useState<string | null>(null);
 
   async function loadJob() {
     const res = await fetch(`/api/jobs/${jobId}`);
@@ -52,6 +55,46 @@ export default function JobContractPage() {
     await loadJob();
     setSigning(false);
   }
+
+  async function handlePay() {
+    if (!payPhone) {
+      setError("Enter the phone number to receive the M-Pesa prompt.");
+      return;
+    }
+    setPaying(true);
+    setError(null);
+    setPayMessage(null);
+
+    const res = await fetch("/api/mpesa/stkpush", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jobId, phone: payPhone }),
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      setError(data.error ?? "Could not start payment.");
+      setPaying(false);
+      return;
+    }
+
+    setPayMessage("Check your phone for the M-Pesa prompt and enter your PIN.");
+    setPaying(false);
+  }
+
+  // Poll every 3s for up to a minute after the STK push is sent, since
+  // Safaricom's callback to our server can take a few seconds to arrive.
+  useEffect(() => {
+    if (!payMessage || job?.payment?.status === "held") return;
+    const interval = setInterval(loadJob, 3000);
+    const timeout = setTimeout(() => clearInterval(interval), 60000);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [payMessage, job?.payment?.status]);
+
 
   if (loading) return <p className="section text-ink/50">Loading contract...</p>;
   if (!job) return <p className="section text-ink/50">Job not found.</p>;
@@ -117,11 +160,58 @@ export default function JobContractPage() {
           </p>
         )}
 
-        {bothSigned ? (
-          <p className="bg-green-50 text-green-700 border border-green-200 rounded-card px-4 py-3 text-sm font-medium">
-            Contract fully signed. This job is ready for payment.
-          </p>
-        ) : !isClient && !isWorker ? (
+        {bothSigned && (
+          <div className="mb-4">
+            {job.payment?.status === "held" ? (
+              <p className="bg-green-50 text-green-700 border border-green-200 rounded-card px-4 py-3 text-sm font-medium">
+                Payment received — KES {job.payment.amount.toLocaleString()} is
+                held securely and will be released to the fundi once the job
+                is confirmed complete.
+              </p>
+            ) : job.payment?.status === "failed" ? (
+              <p className="bg-red-50 text-red-600 border border-red-200 rounded-card px-4 py-3 text-sm">
+                Last payment attempt failed or was cancelled. Try again below.
+              </p>
+            ) : null}
+
+            {isClient && job.payment?.status !== "held" && (
+              <div className="mt-3 border border-ink/10 rounded-card p-4 bg-offwhite">
+                <p className="text-sm text-ink/70 mb-3">
+                  Contract signed. Pay KES{" "}
+                  {job.contract.agreedPrice.toLocaleString()} via M-Pesa to
+                  get this job started — funds are held securely until the
+                  work is done.
+                </p>
+                <input
+                  type="tel"
+                  value={payPhone}
+                  onChange={(e) => setPayPhone(e.target.value)}
+                  placeholder="M-Pesa number, e.g. 0700 000 000"
+                  className="w-full border border-ink/15 rounded-card px-4 py-2.5 text-sm outline-none focus:border-gold mb-3"
+                />
+                <button
+                  onClick={handlePay}
+                  disabled={paying}
+                  className="w-full bg-gold hover:bg-gold-dark disabled:opacity-50 text-ink font-semibold text-sm py-3 rounded-card transition-colors"
+                >
+                  {paying ? "Sending prompt..." : "Pay with M-Pesa"}
+                </button>
+                {payMessage && (
+                  <p className="text-ink/60 text-xs mt-3">{payMessage}</p>
+                )}
+              </div>
+            )}
+
+            {!isClient && !job.payment && (
+              <p className="text-ink/50 text-sm">
+                Waiting on the client to make payment.
+              </p>
+            )}
+          </div>
+        )}
+
+        {!bothSigned && (
+          !isClient && !isWorker ? (
           <p className="text-ink/50 text-sm">
             You're not a party to this contract.
           </p>
@@ -137,7 +227,7 @@ export default function JobContractPage() {
           >
             {signing ? "Signing..." : "I Agree — Sign Contract"}
           </button>
-        )}
+        ))}
       </div>
     </main>
   );
