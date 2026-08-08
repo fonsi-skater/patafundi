@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -69,7 +69,7 @@ export default function RegisterWorkerPage() {
       return;
     }
 
-    router.push("/dashboard");
+    router.push("/search-workers");
   }
 
   return (
