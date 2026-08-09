@@ -16,6 +16,10 @@ export default function JobContractPage() {
   const [payPhone, setPayPhone] = useState("");
   const [paying, setPaying] = useState(false);
   const [payMessage, setPayMessage] = useState<string | null>(null);
+  const [actionLoading, setActionLoading] = useState(false);
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState("");
+  const [reviewSubmitted, setReviewSubmitted] = useState(false);
 
   async function loadJob() {
     const res = await fetch(`/api/jobs/${jobId}`);
@@ -94,6 +98,43 @@ export default function JobContractPage() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [payMessage, job?.payment?.status]);
+
+
+  async function callAction(url: string, extra: Record<string, any> = {}) {
+    setActionLoading(true);
+    setError(null);
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ jobId, authId, ...extra }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      setError(data.error ?? "Something went wrong.");
+      setActionLoading(false);
+      return false;
+    }
+    await loadJob();
+    setActionLoading(false);
+    return true;
+  }
+
+  async function handleMarkComplete() {
+    await callAction("/api/jobs/mark-complete");
+  }
+
+  async function handleConfirmComplete() {
+    await callAction("/api/jobs/confirm-complete");
+  }
+
+  async function handleSubmitReview(e: React.FormEvent) {
+    e.preventDefault();
+    const ok = await callAction("/api/reviews/create", {
+      rating: reviewRating,
+      comment: reviewComment,
+    });
+    if (ok) setReviewSubmitted(true);
+  }
 
 
   if (loading) return <p className="section text-ink/50">Loading contract...</p>;
@@ -206,6 +247,100 @@ export default function JobContractPage() {
               <p className="text-ink/50 text-sm">
                 Waiting on the client to make payment.
               </p>
+            )}
+
+            {job.payment?.status === "held" && job.status === "in_progress" && isWorker && (
+              <button
+                onClick={handleMarkComplete}
+                disabled={actionLoading}
+                className="w-full mt-3 bg-navy hover:bg-navy-light disabled:opacity-50 text-white font-semibold text-sm py-3 rounded-card transition-colors"
+              >
+                {actionLoading ? "Updating..." : "Mark Job as Complete"}
+              </button>
+            )}
+
+            {job.status === "in_progress" && isClient && (
+              <p className="text-ink/50 text-sm mt-3">
+                Waiting on the fundi to mark this job as done.
+              </p>
+            )}
+
+            {job.status === "awaiting_confirmation" && isClient && (
+              <div className="mt-3 border border-gold/40 bg-gold/10 rounded-card p-4">
+                <p className="text-sm text-ink/80 mb-3">
+                  The fundi says this job is done. Confirm to release payment.
+                </p>
+                <button
+                  onClick={handleConfirmComplete}
+                  disabled={actionLoading}
+                  className="w-full bg-gold hover:bg-gold-dark disabled:opacity-50 text-ink font-semibold text-sm py-3 rounded-card transition-colors"
+                >
+                  {actionLoading ? "Confirming..." : "Confirm Complete & Release Payment"}
+                </button>
+              </div>
+            )}
+
+            {job.status === "awaiting_confirmation" && isWorker && (
+              <p className="text-ink/50 text-sm mt-3">
+                Waiting on the client to confirm and release payment.
+              </p>
+            )}
+
+            {job.status === "completed" && (
+              <p className="bg-green-50 text-green-700 border border-green-200 rounded-card px-4 py-3 text-sm font-medium mt-3">
+                Job complete. Payment has been released.
+              </p>
+            )}
+
+            {job.status === "completed" && isClient && !job.review && !reviewSubmitted && (
+              <form
+                onSubmit={handleSubmitReview}
+                className="mt-4 border border-ink/10 rounded-card p-4 bg-offwhite"
+              >
+                <p className="text-sm font-medium text-ink mb-2">
+                  Rate this fundi
+                </p>
+                <div className="flex gap-1 mb-3">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <button
+                      type="button"
+                      key={n}
+                      onClick={() => setReviewRating(n)}
+                      className={`text-2xl ${
+                        n <= reviewRating ? "text-gold" : "text-ink/20"
+                      }`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
+                <textarea
+                  value={reviewComment}
+                  onChange={(e) => setReviewComment(e.target.value)}
+                  placeholder="How did it go? (optional)"
+                  rows={3}
+                  className="w-full border border-ink/15 rounded-card px-3 py-2 text-sm outline-none focus:border-gold mb-3"
+                />
+                <button
+                  type="submit"
+                  disabled={actionLoading}
+                  className="w-full bg-navy hover:bg-navy-light disabled:opacity-50 text-white font-semibold text-sm py-3 rounded-card transition-colors"
+                >
+                  {actionLoading ? "Submitting..." : "Submit Review"}
+                </button>
+              </form>
+            )}
+
+            {job.review && (
+              <div className="mt-4 border border-ink/10 rounded-card p-4">
+                <p className="text-gold text-lg mb-1">
+                  {"★".repeat(job.review.rating)}
+                  {"☆".repeat(5 - job.review.rating)}
+                </p>
+                {job.review.comment && (
+                  <p className="text-sm text-ink/70">{job.review.comment}</p>
+                )}
+              </div>
             )}
           </div>
         )}

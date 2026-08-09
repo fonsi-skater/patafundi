@@ -10,6 +10,7 @@ export async function GET(
     include: {
       contract: true,
       payment: true,
+      review: true,
       client: { select: { id: true, authId: true, fullName: true } },
       worker: { select: { id: true, authId: true, fullName: true } },
     },
