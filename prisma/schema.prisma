@@ -1,30 +1,37 @@
+// PataFundi database schema — PREVIEW ONLY.
+// Not connected yet (Step 1 is still the static frontend against mock-data.ts).
+// This is here so the shape of Step 2 is already visible.
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql" // Supabase Postgres, free tier
   url      = env("DATABASE_URL")
 }
 
 model Worker {
   id            String    @id @default(cuid())
-  authId        String    @unique
+  authId        String    @unique // links to Supabase auth.users.id
   fullName      String
   phone         String    @unique
   skillCategory String
   serviceArea   String
   bio           String?
   idVerified    Boolean   @default(false)
+  isPremium     Boolean   @default(false)
+  featuredUntil DateTime?
   createdAt     DateTime  @default(now())
   jobs          Job[]
   reviews       Review[]
   payments      Payment[]
+  subscriptions Subscription[]
 }
 
 model Client {
   id        String   @id @default(cuid())
-  authId    String   @unique
+  authId    String   @unique // links to Supabase auth.users.id
   fullName  String
   phone     String   @unique
   createdAt DateTime @default(now())
@@ -36,7 +43,7 @@ model Job {
   title       String
   description String
   price       Int
-  status      String    @default("pending")
+  status      String    @default("pending") // pending | contracted | in_progress | completed | disputed
   client      Client    @relation(fields: [clientId], references: [id])
   clientId    String
   worker      Worker?   @relation(fields: [workerId], references: [id])
@@ -48,27 +55,27 @@ model Job {
 }
 
 model Contract {
-  id             String   @id @default(cuid())
-  job            Job      @relation(fields: [jobId], references: [id])
-  jobId          String   @unique
-  scope          String
-  agreedPrice    Int
-  signedByClient Boolean  @default(false)
-  signedByWorker Boolean  @default(false)
-  createdAt      DateTime @default(now())
+  id        String   @id @default(cuid())
+  job       Job      @relation(fields: [jobId], references: [id])
+  jobId     String   @unique
+  scope     String
+  agreedPrice Int
+  signedByClient Boolean @default(false)
+  signedByWorker Boolean @default(false)
+  createdAt DateTime @default(now())
 }
 
 model Payment {
-  id          String   @id @default(cuid())
-  job         Job      @relation(fields: [jobId], references: [id])
-  jobId       String   @unique
-  worker      Worker   @relation(fields: [workerId], references: [id])
-  workerId    String
-  amount      Int
-  platformFee Int
-  status      String   @default("held")
-  mpesaRef    String?
-  createdAt   DateTime @default(now())
+  id           String   @id @default(cuid())
+  job          Job      @relation(fields: [jobId], references: [id])
+  jobId        String   @unique
+  worker       Worker   @relation(fields: [workerId], references: [id])
+  workerId     String
+  amount       Int
+  platformFee  Int
+  status       String   @default("held") // held | released | refunded
+  mpesaRef     String?
+  createdAt    DateTime @default(now())
 }
 
 model Review {
@@ -79,5 +86,17 @@ model Review {
   workerId  String
   rating    Int
   comment   String?
+  createdAt DateTime @default(now())
+}
+
+// Tracks premium subscription and boosted-listing payments — separate
+// from Payment since these aren't tied to a specific Job.
+model Subscription {
+  id        String   @id @default(cuid())
+  worker    Worker   @relation(fields: [workerId], references: [id])
+  workerId  String
+  type      String   // "premium" | "featured"
+  mpesaRef  String?
+  status    String   @default("pending") // pending | active | failed
   createdAt DateTime @default(now())
 }

@@ -8,17 +8,21 @@ export default function WorkerDashboardPage() {
   const [loading, setLoading] = useState(true);
   const [notLoggedIn, setNotLoggedIn] = useState(false);
   const [notAWorker, setNotAWorker] = useState(false);
+  const [authId, setAuthId] = useState<string | null>(null);
+  const [upgrading, setUpgrading] = useState<string | null>(null);
+  const [upgradeMessage, setUpgradeMessage] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data }) => {
-      const authId = data.session?.user.id;
-      if (!authId) {
+      const uid = data.session?.user.id;
+      if (!uid) {
         setNotLoggedIn(true);
         setLoading(false);
         return;
       }
+      setAuthId(uid);
 
-      const res = await fetch(`/api/workers/me?authId=${authId}`);
+      const res = await fetch(`/api/workers/me?authId=${uid}`);
       if (!res.ok) {
         setNotAWorker(true);
         setLoading(false);
@@ -29,6 +33,42 @@ export default function WorkerDashboardPage() {
       setLoading(false);
     });
   }, []);
+
+  async function refetchWorker() {
+    if (!authId) return;
+    const res = await fetch(`/api/workers/me?authId=${authId}`);
+    if (res.ok) setWorker((await res.json()).worker);
+  }
+
+  async function handleUpgrade(type: "premium" | "featured") {
+    if (!authId) return;
+    setUpgrading(type);
+    setUpgradeMessage(null);
+
+    const res = await fetch("/api/workers/upgrade", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ authId, type }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      setUpgradeMessage(data.error ?? "Could not start payment.");
+      setUpgrading(null);
+      return;
+    }
+
+    setUpgradeMessage("Check your phone for the M-Pesa prompt.");
+    setUpgrading(null);
+
+    // Poll for up to a minute, since the callback can take a few seconds
+    let attempts = 0;
+    const interval = setInterval(async () => {
+      attempts++;
+      await refetchWorker();
+      if (attempts >= 20) clearInterval(interval);
+    }, 3000);
+  }
 
   if (loading) return <p className="section text-ink/50">Loading dashboard...</p>;
 
@@ -107,7 +147,56 @@ export default function WorkerDashboardPage() {
       </h1>
       <p className="text-ink/60 mb-8">
         {worker.skillCategory} · {worker.serviceArea}
+        {worker.isPremium && (
+          <span className="ml-2 text-xs bg-gold/20 text-gold-dark px-2 py-0.5 rounded-full font-semibold">
+            Premium
+          </span>
+        )}
       </p>
+
+      <div className="grid sm:grid-cols-2 gap-4 mb-10">
+        <div className="bg-navy rounded-card p-5">
+          <p className="text-white font-semibold text-sm mb-1">
+            {worker.isPremium ? "Premium — Active" : "Go Premium — KES 500/month"}
+          </p>
+          <p className="text-white/60 text-xs mb-3">
+            Priority placement in search results plus a Premium badge on your profile.
+          </p>
+          {!worker.isPremium && (
+            <button
+              onClick={() => handleUpgrade("premium")}
+              disabled={upgrading === "premium"}
+              className="bg-gold hover:bg-gold-dark disabled:opacity-50 text-ink text-xs font-semibold px-4 py-2 rounded-card"
+            >
+              {upgrading === "premium" ? "Sending prompt..." : "Pay with M-Pesa"}
+            </button>
+          )}
+        </div>
+
+        <div className="bg-white border border-ink/10 rounded-card p-5">
+          <p className="text-ink font-semibold text-sm mb-1">
+            {worker.featuredUntil && new Date(worker.featuredUntil) > new Date()
+              ? `Boosted until ${new Date(worker.featuredUntil).toLocaleDateString()}`
+              : "Boost Listing — KES 200/7 days"}
+          </p>
+          <p className="text-ink/50 text-xs mb-3">
+            Jump to the top of search results for a week — good for a slow week.
+          </p>
+          {!(worker.featuredUntil && new Date(worker.featuredUntil) > new Date()) && (
+            <button
+              onClick={() => handleUpgrade("featured")}
+              disabled={upgrading === "featured"}
+              className="bg-navy hover:bg-navy-light disabled:opacity-50 text-white text-xs font-semibold px-4 py-2 rounded-card"
+            >
+              {upgrading === "featured" ? "Sending prompt..." : "Pay with M-Pesa"}
+            </button>
+          )}
+        </div>
+      </div>
+
+      {upgradeMessage && (
+        <p className="text-ink/60 text-sm mb-6 -mt-6">{upgradeMessage}</p>
+      )}
 
       <div className="grid sm:grid-cols-3 gap-4 mb-10">
         <div className="bg-white rounded-card p-5 border border-ink/10">

@@ -27,6 +27,18 @@ export default async function SearchWorkersPage({
     orderBy: { createdAt: "desc" },
   });
 
+  // Boosted (active featuredUntil) first, then premium, then everyone else —
+  // this is where the "Boost Listing" and "Go Premium" payments actually
+  // pay off for the fundi who bought them.
+  const now = new Date();
+  const sortedWorkers = [...workers].sort((a, b) => {
+    const aBoosted = a.featuredUntil && new Date(a.featuredUntil) > now;
+    const bBoosted = b.featuredUntil && new Date(b.featuredUntil) > now;
+    if (aBoosted !== bBoosted) return aBoosted ? -1 : 1;
+    if (a.isPremium !== b.isPremium) return a.isPremium ? -1 : 1;
+    return 0;
+  });
+
   return (
     <main className="min-h-screen bg-offwhite section">
       <h1 className="text-3xl font-bold text-ink mb-2">Find a Fundi</h1>
@@ -86,18 +98,34 @@ export default async function SearchWorkersPage({
         </p>
       ) : (
         <div className="grid md:grid-cols-3 gap-6">
-          {workers.map((worker) => (
+          {sortedWorkers.map((worker) => {
+            const isBoosted = worker.featuredUntil && new Date(worker.featuredUntil) > now;
+            return (
             <div
               key={worker.id}
-              className="bg-white rounded-card p-6 border border-ink/10 shadow-sm"
+              className={`bg-white rounded-card p-6 border shadow-sm ${
+                isBoosted ? "border-gold ring-1 ring-gold/40" : "border-ink/10"
+              }`}
             >
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-3 flex-wrap gap-1">
                 <h3 className="font-semibold text-ink">{worker.fullName}</h3>
-                {worker.idVerified && (
-                  <span className="text-xs bg-gold/20 text-gold-dark px-2 py-0.5 rounded-full font-semibold">
-                    Verified
-                  </span>
-                )}
+                <div className="flex gap-1">
+                  {isBoosted && (
+                    <span className="text-xs bg-gold text-ink px-2 py-0.5 rounded-full font-semibold">
+                      Boosted
+                    </span>
+                  )}
+                  {worker.isPremium && (
+                    <span className="text-xs bg-navy text-white px-2 py-0.5 rounded-full font-semibold">
+                      Premium
+                    </span>
+                  )}
+                  {worker.idVerified && (
+                    <span className="text-xs bg-gold/20 text-gold-dark px-2 py-0.5 rounded-full font-semibold">
+                      Verified
+                    </span>
+                  )}
+                </div>
               </div>
               <p className="text-sm text-navy font-medium mb-1">{worker.skillCategory}</p>
               <p className="text-xs text-ink/50 mb-3">{worker.serviceArea}</p>
@@ -112,7 +140,8 @@ export default async function SearchWorkersPage({
                 Request This Fundi
               </a>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </main>
