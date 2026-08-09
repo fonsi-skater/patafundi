@@ -64,7 +64,7 @@ export default async function SearchWorkersPage({
         </button>
 
         {(skill || area) && (
-          
+          <a
             href="/search-workers"
             className="text-ink/50 text-sm underline self-center"
           >
@@ -105,7 +105,7 @@ export default async function SearchWorkersPage({
                 <p className="text-sm text-ink/70 leading-relaxed">{worker.bio}</p>
               )}
               <p className="text-xs text-ink/40 mt-4">{worker.phone}</p>
-              
+              <a
                 href={`/post-job?workerId=${worker.id}`}
                 className="mt-4 inline-block bg-navy hover:bg-navy-light text-white text-xs font-semibold px-4 py-2 rounded-card transition-colors"
               >
