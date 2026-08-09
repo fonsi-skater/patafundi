@@ -69,7 +69,7 @@ export default function RegisterWorkerPage() {
       return;
     }
 
-    router.push("/search-workers");
+    router.push("/dashboard");
   }
 
   return (
