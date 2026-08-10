@@ -141,19 +141,22 @@ export default function WorkerDashboardPage() {
   };
 
   return (
-    <main className="min-h-screen bg-offwhite section">
-      <h1 className="text-3xl font-bold text-ink mb-1">
-        Welcome back, {worker.fullName.split(" ")[0]}
-      </h1>
-      <p className="text-ink/60 mb-8">
-        {worker.skillCategory} · {worker.serviceArea}
-        {worker.isPremium && (
-          <span className="ml-2 text-xs bg-gold/20 text-gold-dark px-2 py-0.5 rounded-full font-semibold">
-            Premium
-          </span>
-        )}
-      </p>
+    <main className="min-h-screen bg-offwhite">
+      <section className="bg-navy px-6 md:px-16 py-14">
+        <h1 className="text-white text-3xl font-bold mb-1">
+          Welcome back, {worker.fullName.split(" ")[0]}
+        </h1>
+        <p className="text-white/60">
+          {worker.skillCategory} · {worker.serviceArea}
+          {worker.isPremium && (
+            <span className="ml-2 text-xs bg-gold/20 text-gold px-2 py-0.5 rounded-full font-semibold">
+              Premium
+            </span>
+          )}
+        </p>
+      </section>
 
+      <div className="section">
       <div className="grid sm:grid-cols-2 gap-4 mb-10">
         <div className="bg-navy rounded-card p-5">
           <p className="text-white font-semibold text-sm mb-1">
@@ -277,6 +280,7 @@ export default function WorkerDashboardPage() {
           ))}
         </div>
       )}
+      </div>
     </main>
   );
 }

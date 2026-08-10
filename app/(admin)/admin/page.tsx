@@ -71,9 +71,13 @@ export default function AdminPage() {
   }
 
   return (
-    <main className="min-h-screen bg-offwhite section">
-      <h1 className="text-3xl font-bold text-ink mb-6">Admin</h1>
+    <main className="min-h-screen bg-offwhite">
+      <section className="bg-navy px-6 md:px-16 py-14">
+        <h1 className="text-white text-3xl font-bold">Admin</h1>
+        <p className="text-white/60 text-sm mt-1">Fundi verification & job oversight</p>
+      </section>
 
+      <div className="section">
       <div className="flex gap-2 mb-6">
         <button
           onClick={() => setTab("workers")}
@@ -144,6 +148,7 @@ export default function AdminPage() {
           ))}
         </div>
       )}
+      </div>
     </main>
   );
 }

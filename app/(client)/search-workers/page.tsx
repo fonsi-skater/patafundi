@@ -40,12 +40,15 @@ export default async function SearchWorkersPage({
   });
 
   return (
-    <main className="min-h-screen bg-offwhite section">
-      <h1 className="text-3xl font-bold text-ink mb-2">Find a Fundi</h1>
-      <p className="text-ink/60 mb-6">
-        {workers.length} verified {workers.length === 1 ? "fundi" : "fundis"} ready to work.
-      </p>
+    <main className="min-h-screen bg-offwhite">
+      <section className="bg-navy px-6 md:px-16 py-14">
+        <h1 className="text-white text-3xl font-bold mb-2">Find a Fundi</h1>
+        <p className="text-white/60">
+          {workers.length} verified {workers.length === 1 ? "fundi" : "fundis"} ready to work.
+        </p>
+      </section>
 
+      <div className="section">
       <form className="flex flex-wrap gap-3 mb-8 bg-white p-4 rounded-card border border-ink/10">
         <select
           name="skill"
@@ -144,6 +147,7 @@ export default async function SearchWorkersPage({
           })}
         </div>
       )}
+      </div>
     </main>
   );
 }
