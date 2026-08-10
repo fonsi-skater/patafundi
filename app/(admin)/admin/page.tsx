@@ -102,7 +102,7 @@ export default function AdminPage() {
           {workers.map((w) => (
             <div
               key={w.id}
-              className="bg-white rounded-card p-4 border border-ink/10 flex items-center justify-between"
+              className="bg-white rounded-card p-4 border border-ink/10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
             >
               <div>
                 <p className="font-semibold text-ink text-sm">{w.fullName}</p>
