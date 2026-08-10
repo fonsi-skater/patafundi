@@ -4,7 +4,10 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-const skillCategories = [
+// These are just suggestions now — the field accepts any typed skill,
+// so a fundi can list "Car Wash," "Mama Fua," "Dog Trainer," or anything
+// else that isn't in this list.
+const skillSuggestions = [
   "Plumbing",
   "Electrical",
   "Carpentry",
@@ -13,6 +16,16 @@ const skillCategories = [
   "Masonry",
   "Appliance Repair",
   "Gardening & Landscaping",
+  "Car Wash",
+  "Mama Fua (Laundry)",
+  "Catering",
+  "Slashing / Grass Cutting",
+  "Dog Training / Pet Care",
+  "Moving & Hauling",
+  "Tailoring",
+  "Welding",
+  "Babysitting / Nanny",
+  "Driving",
 ];
 
 export default function RegisterWorkerPage() {
@@ -22,7 +35,7 @@ export default function RegisterWorkerPage() {
     phone: "",
     email: "",
     password: "",
-    skillCategory: skillCategories[0],
+    skillCategory: "",
     serviceArea: "",
     bio: "",
   });
@@ -38,6 +51,7 @@ export default function RegisterWorkerPage() {
     setError(null);
     setLoading(true);
 
+    // Step 1: create the login account with Supabase Auth
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
@@ -49,6 +63,7 @@ export default function RegisterWorkerPage() {
       return;
     }
 
+    // Step 2: create the matching Worker profile row in our own database
     const res = await fetch("/api/workers/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -126,18 +141,20 @@ export default function RegisterWorkerPage() {
             />
           </Field>
 
-          <Field label="Skill category">
-            <select
+          <Field label="What work do you do?">
+            <input
+              required
+              list="skill-suggestions"
               value={form.skillCategory}
               onChange={(e) => update("skillCategory", e.target.value)}
               className="input"
-            >
-              {skillCategories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
+              placeholder="e.g. Car Wash, Mama Fua, Dog Trainer, Catering..."
+            />
+            <datalist id="skill-suggestions">
+              {skillSuggestions.map((cat) => (
+                <option key={cat} value={cat} />
               ))}
-            </select>
+            </datalist>
           </Field>
 
           <Field label="Service area">

@@ -14,6 +14,9 @@ export default function Hero() {
       <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center px-6 md:px-16 py-16 md:py-24">
         {/* Left: headline + subcopy, same weight/structure as reference */}
         <div>
+          <p className="text-gold text-sm font-semibold italic mb-3">
+            Every Fundi Feeds a Family.
+          </p>
           <h1 className="text-white text-4xl md:text-6xl font-bold leading-tight">
             TRUSTED FUNDIS.
             <br />

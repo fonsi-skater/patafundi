@@ -1,16 +1,5 @@
 import { prisma } from "@/lib/prisma";
 
-const skillCategories = [
-  "Plumbing",
-  "Electrical",
-  "Carpentry",
-  "Painting",
-  "Cleaning & Domestic",
-  "Masonry",
-  "Appliance Repair",
-  "Gardening & Landscaping",
-];
-
 export default async function SearchWorkersPage({
   searchParams,
 }: {
@@ -21,11 +10,20 @@ export default async function SearchWorkersPage({
 
   const workers = await prisma.worker.findMany({
     where: {
-      ...(skill ? { skillCategory: skill } : {}),
+      ...(skill ? { skillCategory: { contains: skill, mode: "insensitive" } } : {}),
       ...(area ? { serviceArea: { contains: area, mode: "insensitive" } } : {}),
     },
     orderBy: { createdAt: "desc" },
   });
+
+  // Skill suggestions now come from whatever fundis have actually typed at
+  // registration — not a fixed list — so new categories show up here
+  // automatically as people join with new kinds of work.
+  const allWorkers = await prisma.worker.findMany({
+    select: { skillCategory: true },
+    distinct: ["skillCategory"],
+  });
+  const skillOptions = allWorkers.map((w) => w.skillCategory).sort();
 
   // Boosted (active featuredUntil) first, then premium, then everyone else —
   // this is where the "Boost Listing" and "Go Premium" payments actually
@@ -50,18 +48,19 @@ export default async function SearchWorkersPage({
 
       <div className="section">
       <form className="flex flex-wrap gap-3 mb-8 bg-white p-4 rounded-card border border-ink/10">
-        <select
+        <input
+          type="text"
           name="skill"
+          list="skill-options"
           defaultValue={skill}
-          className="border border-ink/15 rounded-card px-3 py-2 text-sm outline-none focus:border-gold"
-        >
-          <option value="">All skills</option>
-          {skillCategories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
+          placeholder="Any skill — car wash, plumbing, catering..."
+          className="border border-ink/15 rounded-card px-3 py-2 text-sm outline-none focus:border-gold flex-1 min-w-[200px]"
+        />
+        <datalist id="skill-options">
+          {skillOptions.map((cat) => (
+            <option key={cat} value={cat} />
           ))}
-        </select>
+        </datalist>
 
         <input
           type="text"
@@ -110,30 +109,55 @@ export default async function SearchWorkersPage({
                 isBoosted ? "border-gold ring-1 ring-gold/40" : "border-ink/10"
               }`}
             >
-              <div className="flex items-center justify-between mb-3 flex-wrap gap-1">
-                <h3 className="font-semibold text-ink">{worker.fullName}</h3>
-                <div className="flex gap-1">
-                  {isBoosted && (
-                    <span className="text-xs bg-gold text-ink px-2 py-0.5 rounded-full font-semibold">
-                      Boosted
-                    </span>
-                  )}
-                  {worker.isPremium && (
-                    <span className="text-xs bg-navy text-white px-2 py-0.5 rounded-full font-semibold">
-                      Premium
-                    </span>
-                  )}
-                  {worker.idVerified && (
-                    <span className="text-xs bg-gold/20 text-gold-dark px-2 py-0.5 rounded-full font-semibold">
-                      Verified
-                    </span>
-                  )}
+              <div className="flex items-center gap-3 mb-3">
+                {worker.profilePicUrl ? (
+                  <img
+                    src={worker.profilePicUrl}
+                    alt={worker.fullName}
+                    className="w-10 h-10 rounded-full object-cover border border-ink/10"
+                  />
+                ) : (
+                  <div className="w-10 h-10 rounded-full bg-navy text-white flex items-center justify-center font-bold text-sm">
+                    {worker.fullName.charAt(0)}
+                  </div>
+                )}
+                <div className="flex items-center justify-between flex-1 flex-wrap gap-1">
+                  <h3 className="font-semibold text-ink">{worker.fullName}</h3>
+                  <div className="flex gap-1">
+                    {isBoosted && (
+                      <span className="text-xs bg-gold text-ink px-2 py-0.5 rounded-full font-semibold">
+                        Boosted
+                      </span>
+                    )}
+                    {worker.isPremium && (
+                      <span className="text-xs bg-navy text-white px-2 py-0.5 rounded-full font-semibold">
+                        Premium
+                      </span>
+                    )}
+                    {worker.idVerified && (
+                      <span className="text-xs bg-gold/20 text-gold-dark px-2 py-0.5 rounded-full font-semibold">
+                        Verified
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
               <p className="text-sm text-navy font-medium mb-1">{worker.skillCategory}</p>
               <p className="text-xs text-ink/50 mb-3">{worker.serviceArea}</p>
               {worker.bio && (
                 <p className="text-sm text-ink/70 leading-relaxed">{worker.bio}</p>
+              )}
+              {worker.portfolioImages && worker.portfolioImages.length > 0 && (
+                <div className="flex gap-1.5 mt-3">
+                  {worker.portfolioImages.slice(0, 3).map((url: string) => (
+                    <img
+                      key={url}
+                      src={url}
+                      alt="Work sample"
+                      className="w-14 h-14 rounded object-cover border border-ink/10"
+                    />
+                  ))}
+                </div>
               )}
               <p className="text-xs text-ink/40 mt-4">{worker.phone}</p>
               <a

@@ -1,11 +1,13 @@
-﻿export default function Footer() {
+export default function Footer() {
   return (
     <footer className="bg-ink text-white/60 px-6 md:px-16 py-10 text-sm">
       <div className="flex flex-col md:flex-row justify-between gap-6">
         <div>
-          <p className="text-white font-display font-bold text-lg mb-1">
+          <p className="text-white font-display font-bold text-lg mb-1 flex items-center gap-2">
+            <img src="/logo-mark.svg" alt="PataFundi" className="w-6 h-6" />
             Pata<span className="text-gold">Fundi</span>
           </p>
+          <p className="text-gold text-xs italic mb-2">Every Fundi Feeds a Family.</p>
           <p className="max-w-xs">
             Verified fundis, secure payments, real reviews — bringing structure
             to Kenya's informal labor market.

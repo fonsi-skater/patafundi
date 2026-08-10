@@ -19,6 +19,8 @@ model Worker {
   skillCategory String
   serviceArea   String
   bio           String?
+  profilePicUrl String?
+  portfolioImages String[] @default([])
   idVerified    Boolean   @default(false)
   isPremium     Boolean   @default(false)
   featuredUntil DateTime?

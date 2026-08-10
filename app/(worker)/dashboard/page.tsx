@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { uploadToCloudinary } from "@/lib/cloudinary";
 
 export default function WorkerDashboardPage() {
   const [worker, setWorker] = useState<any>(null);
@@ -11,6 +12,9 @@ export default function WorkerDashboardPage() {
   const [authId, setAuthId] = useState<string | null>(null);
   const [upgrading, setUpgrading] = useState<string | null>(null);
   const [upgradeMessage, setUpgradeMessage] = useState<string | null>(null);
+  const [uploadingPic, setUploadingPic] = useState(false);
+  const [uploadingPortfolio, setUploadingPortfolio] = useState(false);
+  const [photoError, setPhotoError] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data }) => {
@@ -38,6 +42,56 @@ export default function WorkerDashboardPage() {
     if (!authId) return;
     const res = await fetch(`/api/workers/me?authId=${authId}`);
     if (res.ok) setWorker((await res.json()).worker);
+  }
+
+  async function handleProfilePicUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file || !authId) return;
+    setPhotoError(null);
+    setUploadingPic(true);
+    try {
+      const url = await uploadToCloudinary(file);
+      await fetch("/api/workers/profile-pic", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ authId, url }),
+      });
+      await refetchWorker();
+    } catch (err) {
+      setPhotoError("Could not upload photo. Try again.");
+    }
+    setUploadingPic(false);
+  }
+
+  async function handlePortfolioUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file || !authId || !worker) return;
+    setPhotoError(null);
+    setUploadingPortfolio(true);
+    try {
+      const url = await uploadToCloudinary(file);
+      const newUrls = [...(worker.portfolioImages ?? []), url];
+      await fetch("/api/workers/portfolio", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ authId, urls: newUrls }),
+      });
+      await refetchWorker();
+    } catch (err) {
+      setPhotoError("Could not upload photo. Try again.");
+    }
+    setUploadingPortfolio(false);
+  }
+
+  async function handleRemovePortfolioImage(url: string) {
+    if (!authId || !worker) return;
+    const newUrls = (worker.portfolioImages ?? []).filter((u: string) => u !== url);
+    await fetch("/api/workers/portfolio", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ authId, urls: newUrls }),
+    });
+    await refetchWorker();
   }
 
   async function handleUpgrade(type: "premium" | "featured") {
@@ -157,6 +211,69 @@ export default function WorkerDashboardPage() {
       </section>
 
       <div className="section">
+
+      <div className="bg-white rounded-card p-5 border border-ink/10 mb-6">
+        <h2 className="font-semibold text-ink mb-4">Your Profile</h2>
+        <div className="flex items-center gap-4 mb-6">
+          {worker.profilePicUrl ? (
+            <img
+              src={worker.profilePicUrl}
+              alt={worker.fullName}
+              className="w-16 h-16 rounded-full object-cover border border-ink/10"
+            />
+          ) : (
+            <div className="w-16 h-16 rounded-full bg-navy text-white flex items-center justify-center font-bold text-xl">
+              {worker.fullName.charAt(0)}
+            </div>
+          )}
+          <div>
+            <label className="inline-block bg-navy hover:bg-navy-light text-white text-xs font-semibold px-4 py-2 rounded-card cursor-pointer transition-colors">
+              {uploadingPic ? "Uploading..." : "Change Photo"}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleProfilePicUpload}
+                disabled={uploadingPic}
+                className="hidden"
+              />
+            </label>
+          </div>
+        </div>
+
+        <p className="text-ink/70 text-sm font-medium mb-2">
+          Showcase your work ({(worker.portfolioImages ?? []).length} photos)
+        </p>
+        <div className="flex flex-wrap gap-3">
+          {(worker.portfolioImages ?? []).map((url: string) => (
+            <div key={url} className="relative w-20 h-20">
+              <img
+                src={url}
+                alt="Portfolio"
+                className="w-20 h-20 rounded-card object-cover border border-ink/10"
+              />
+              <button
+                onClick={() => handleRemovePortfolioImage(url)}
+                className="absolute -top-2 -right-2 bg-ink text-white w-5 h-5 rounded-full text-xs flex items-center justify-center"
+                aria-label="Remove photo"
+              >
+                ×
+              </button>
+            </div>
+          ))}
+          <label className="w-20 h-20 rounded-card border-2 border-dashed border-ink/20 flex items-center justify-center text-ink/40 text-xs cursor-pointer hover:border-gold transition-colors text-center px-1">
+            {uploadingPortfolio ? "..." : "+ Add"}
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handlePortfolioUpload}
+              disabled={uploadingPortfolio}
+              className="hidden"
+            />
+          </label>
+        </div>
+        {photoError && <p className="text-red-500 text-xs mt-2">{photoError}</p>}
+      </div>
+
       <div className="grid sm:grid-cols-2 gap-4 mb-10">
         <div className="bg-navy rounded-card p-5">
           <p className="text-white font-semibold text-sm mb-1">
