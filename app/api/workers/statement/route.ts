@@ -102,7 +102,7 @@ export async function GET(req: NextRequest) {
   doc.end();
   const pdfBuffer = await pdfPromise;
 
-  return new NextResponse(pdfBuffer, {
+  return new NextResponse(new Uint8Array(pdfBuffer), {
     headers: {
       "Content-Type": "application/pdf",
       "Content-Disposition": `attachment; filename="patafundi-statement-${worker.fullName.replace(/\s+/g, "-")}.pdf"`,

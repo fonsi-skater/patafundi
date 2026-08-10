@@ -18,7 +18,8 @@
     "react-leaflet": "^4.2.1",
     "@prisma/client": "^5.16.1",
     "@supabase/supabase-js": "^2.44.4",
-    "pdfkit": "^0.15.0"
+    "pdfkit": "^0.15.0",
+    "iconv-lite": "^0.6.3"
   },
   "devDependencies": {
     "typescript": "^5.5.3",
