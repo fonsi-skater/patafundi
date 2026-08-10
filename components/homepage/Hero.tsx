@@ -4,8 +4,12 @@ export default function Hero() {
   return (
     <section className="relative bg-navy overflow-hidden">
       {/* Background image placeholder — swap for a real photo of fundis at work */}
-      <div className="absolute inset-0 bg-[url('/hero-fundi.jpg')] bg-cover bg-center opacity-40" />
-      <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-navy/40" />
+      <div className="absolute inset-0 bg-[url('/hero-fundi.jpg')] bg-cover bg-center opacity-25" />
+      <div className="absolute inset-0 bg-navy/80" />
+
+      {/* Signature glow — a soft radial teal blob behind the headline,
+          matching the reference's central glow treatment */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full bg-[radial-gradient(circle,rgba(45,212,166,0.28),transparent_65%)] blur-2xl pointer-events-none" />
 
       <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center px-6 md:px-16 py-16 md:py-24">
         {/* Left: headline + subcopy, same weight/structure as reference */}
@@ -27,7 +31,7 @@ export default function Hero() {
             {featuredCategories.slice(0, 4).map((cat) => (
               <span
                 key={cat}
-                className="text-xs text-white/80 border border-white/20 rounded-full px-3 py-1.5"
+                className="text-xs text-white/80 border border-white/20 rounded-full px-3 py-1.5 backdrop-blur-sm"
               >
                 {cat}
               </span>
@@ -35,8 +39,8 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Right: floating "get matched" form — same visual role as the quote form in the reference */}
-        <div className="bg-navy-light rounded-card p-6 md:p-8 shadow-2xl border border-white/10 max-w-md md:justify-self-end w-full">
+        {/* Right: floating "get matched" form — glassmorphic card matching the reference's panel style */}
+        <div className="bg-navy-light/80 backdrop-blur-md rounded-card p-6 md:p-8 shadow-2xl border border-gold/20 max-w-md md:justify-self-end w-full">
           <p className="text-gold text-xs font-semibold tracking-wide uppercase mb-1">
             PataFundi
           </p>
@@ -72,7 +76,7 @@ export default function Hero() {
 
             <button
               type="submit"
-              className="w-full bg-gold hover:bg-gold-dark text-ink font-semibold text-sm py-3 rounded-card transition-colors"
+              className="w-full bg-gold hover:bg-gold-dark text-ink font-semibold text-sm py-3 rounded-card transition-colors shadow-[0_0_20px_rgba(45,212,166,0.4)]"
             >
               Find Verified Fundis
             </button>

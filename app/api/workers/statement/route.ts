@@ -34,11 +34,11 @@ export async function GET(req: NextRequest) {
   });
 
   // --- Header ---
-  doc.fontSize(20).fillColor("#141B33").text("PataFundi", { continued: false });
+  doc.fontSize(20).fillColor("#0A1512").text("PataFundi", { continued: false });
   doc.fontSize(10).fillColor("#666").text("Verified Fundis. Secure Payments. Real Reviews.");
   doc.moveDown(1.5);
 
-  doc.fontSize(16).fillColor("#141B33").text("Earnings Statement");
+  doc.fontSize(16).fillColor("#0A1512").text("Earnings Statement");
   doc.fontSize(10).fillColor("#666").text(`Generated ${new Date().toLocaleDateString("en-KE", { year: "numeric", month: "long", day: "numeric" })}`);
   doc.moveDown(1);
 
@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
   const totalFees = worker.jobs.reduce((s, j) => s + (j.payment?.platformFee ?? 0), 0);
   const totalNet = totalGross - totalFees;
 
-  doc.fontSize(13).fillColor("#141B33").text("Summary");
+  doc.fontSize(13).fillColor("#0A1512").text("Summary");
   doc.moveDown(0.3);
   doc.fontSize(10).fillColor("#000");
   doc.text(`Completed & paid jobs: ${worker.jobs.length}`);
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
   doc.moveDown(1.5);
 
   // --- Job history table (simple layout, no external table library needed) ---
-  doc.fontSize(13).fillColor("#141B33").text("Job History");
+  doc.fontSize(13).fillColor("#0A1512").text("Job History");
   doc.moveDown(0.5);
 
   const colX = { date: 50, client: 140, title: 280, net: 460 };
