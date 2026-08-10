@@ -236,7 +236,15 @@ export default function WorkerDashboardPage() {
         </div>
       </div>
 
-      <h2 className="text-xl font-bold text-ink mb-4">Job History</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold text-ink">Job History</h2>
+        <a
+          href={`/api/workers/statement?authId=${authId}`}
+          className="text-xs bg-navy hover:bg-navy-light text-white font-semibold px-4 py-2 rounded-card transition-colors"
+        >
+          Download Earnings Statement (PDF)
+        </a>
+      </div>
 
       {worker.jobs.length === 0 ? (
         <p className="text-ink/50">
