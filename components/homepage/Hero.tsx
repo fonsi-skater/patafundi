@@ -1,12 +1,14 @@
-﻿import { featuredCategories } from "@/lib/mock-data";
+import { featuredCategories } from "@/lib/mock-data";
 
 export default function Hero() {
   return (
     <section className="relative bg-navy overflow-hidden">
+      {/* Background image placeholder — swap for a real photo of fundis at work */}
       <div className="absolute inset-0 bg-[url('/hero-fundi.jpg')] bg-cover bg-center opacity-40" />
       <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-navy/40" />
 
-      <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center px-6 md:px-16 pt-32 pb-16 md:pt-40 md:pb-24">
+      <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center px-6 md:px-16 py-16 md:py-24">
+        {/* Left: headline + subcopy, same weight/structure as reference */}
         <div>
           <h1 className="text-white text-4xl md:text-6xl font-bold leading-tight">
             TRUSTED FUNDIS.
@@ -33,6 +35,7 @@ export default function Hero() {
           </div>
         </div>
 
+        {/* Right: floating "get matched" form — same visual role as the quote form in the reference */}
         <div className="bg-navy-light rounded-card p-6 md:p-8 shadow-2xl border border-white/10 max-w-md md:justify-self-end w-full">
           <p className="text-gold text-xs font-semibold tracking-wide uppercase mb-1">
             PataFundi
