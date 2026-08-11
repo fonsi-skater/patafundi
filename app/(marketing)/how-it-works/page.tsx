@@ -1,7 +1,7 @@
 export default function HowItWorksPage() {
   const clientSteps = [
-    { title: "Search", desc: "Filter fundis by skill and location near you." },
-    { title: "Request", desc: "Describe the job and request a specific fundi." },
+    { title: "Search", desc: "Filter workers by skill and location near you." },
+    { title: "Request", desc: "Describe the job and request a specific worker." },
     { title: "Sign", desc: "Both of you confirm a simple digital contract." },
     { title: "Pay securely", desc: "Pay via M-Pesa — funds are held until the job is done." },
     { title: "Confirm & review", desc: "Confirm completion to release payment, then leave a review." },
@@ -18,9 +18,9 @@ export default function HowItWorksPage() {
   return (
     <main className="min-h-screen bg-offwhite">
       <section className="bg-navy px-6 md:px-16 py-20 text-center">
-        <h1 className="text-white text-3xl md:text-4xl font-bold">How PataFundi Works</h1>
+        <h1 className="text-white text-3xl md:text-4xl font-bold">How Patakazi Works</h1>
         <p className="text-white/60 mt-3 max-w-xl mx-auto">
-          A simple, secure flow for both sides — verified fundis, protected payments.
+          A simple, secure flow for both sides — verified workers, protected payments.
         </p>
       </section>
 
@@ -44,12 +44,12 @@ export default function HowItWorksPage() {
             href="/search-workers"
             className="inline-block mt-6 bg-gold hover:bg-gold-dark text-ink text-sm font-semibold px-5 py-2.5 rounded-card"
           >
-            Find a Fundi
+            Find a Worker
           </a>
         </div>
 
         <div>
-          <h2 className="text-xl font-bold text-ink mb-6">For Fundis</h2>
+          <h2 className="text-xl font-bold text-ink mb-6">For Workers</h2>
           <div className="space-y-5">
             {workerSteps.map((step, i) => (
               <div key={step.title} className="flex gap-4">
@@ -67,7 +67,7 @@ export default function HowItWorksPage() {
             href="/register-worker"
             className="inline-block mt-6 bg-navy hover:bg-navy-light text-white text-sm font-semibold px-5 py-2.5 rounded-card"
           >
-            Join as a Fundi
+            Join as a Worker
           </a>
         </div>
       </section>

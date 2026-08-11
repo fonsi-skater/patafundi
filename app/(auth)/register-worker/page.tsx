@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
 // These are just suggestions now — the field accepts any typed skill,
-// so a fundi can list "Car Wash," "Mama Fua," "Dog Trainer," or anything
+// so a worker can list "Car Wash," "Mama Fua," "Dog Trainer," or anything
 // else that isn't in this list.
 const skillSuggestions = [
   "Plumbing",
@@ -91,10 +91,10 @@ export default function RegisterWorkerPage() {
     <main className="min-h-screen bg-navy flex items-center justify-center px-6 py-16">
       <div className="bg-navy-light rounded-card p-8 max-w-md w-full border border-white/10">
         <p className="text-gold text-xs font-semibold uppercase tracking-wide mb-1">
-          Join PataFundi
+          Join Patakazi
         </p>
         <h1 className="text-white text-2xl font-display font-bold mb-6">
-          Register as a Fundi
+          Register as a Worker
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -188,7 +188,7 @@ export default function RegisterWorkerPage() {
             disabled={loading}
             className="w-full bg-gold hover:bg-gold-dark disabled:opacity-50 text-ink font-semibold text-sm py-3 rounded-card transition-colors"
           >
-            {loading ? "Creating your profile..." : "Create My Fundi Profile"}
+            {loading ? "Creating your profile..." : "Create My Worker Profile"}
           </button>
         </form>
       </div>

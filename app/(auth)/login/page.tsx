@@ -28,8 +28,8 @@ export default function LoginPage() {
     }
 
     // Figure out if this login belongs to a worker or a client, and send
-    // each to the page that's actually relevant to them — a fundi should
-    // land on their own dashboard, not the page for hiring other fundis.
+    // each to the page that's actually relevant to them — a worker should
+    // land on their own dashboard, not the page for hiring other workers.
     const workerCheck = await fetch(`/api/workers/me?authId=${authData.user.id}`);
     router.push(workerCheck.ok ? "/dashboard" : "/search-workers");
     router.refresh();
@@ -89,7 +89,7 @@ export default function LoginPage() {
           </a>{" "}
           or{" "}
           <a href="/register-worker" className="text-gold underline">
-            as a fundi
+            as a worker
           </a>
         </p>
       </div>

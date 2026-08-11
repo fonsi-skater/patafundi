@@ -3,8 +3,8 @@ import { featuredCategories } from "@/lib/mock-data";
 export default function Hero() {
   return (
     <section className="relative bg-navy overflow-hidden">
-      {/* Background image placeholder — swap for a real photo of fundis at work */}
-      <div className="absolute inset-0 bg-[url('/hero-fundi.jpg')] bg-cover bg-center opacity-25" />
+      {/* Background image placeholder — swap for a real photo of workers at work */}
+      <div className="absolute inset-0 bg-[url('/hero-worker.jpg')] bg-cover bg-center opacity-25" />
       <div className="absolute inset-0 bg-navy/80" />
 
       {/* Signature glow — a soft radial teal blob behind the headline,
@@ -15,17 +15,17 @@ export default function Hero() {
         {/* Left: headline + subcopy, same weight/structure as reference */}
         <div>
           <p className="text-gold text-sm font-semibold italic mb-3">
-            Every Fundi Feeds a Family.
+            Every Worker Feeds a Family.
           </p>
           <h1 className="text-white text-4xl md:text-6xl font-bold leading-tight">
-            TRUSTED FUNDIS.
+            TRUSTED WORKERS.
             <br />
             VERIFIED. INSURED.
             <br />
             READY TO WORK.
           </h1>
           <p className="text-white/70 mt-6 max-w-md text-sm md:text-base">
-            PataFundi connects you with ID-verified artisans and domestic workers
+            Patakazi connects you with ID-verified artisans and domestic workers
             near you — real reviews, secure M-Pesa payment, and a contract on
             record for every job.
           </p>
@@ -45,10 +45,10 @@ export default function Hero() {
         {/* Right: floating "get matched" form — glassmorphic card matching the reference's panel style */}
         <div className="bg-navy-light/80 backdrop-blur-md rounded-card p-6 md:p-8 shadow-2xl border border-gold/20 max-w-md md:justify-self-end w-full">
           <p className="text-gold text-xs font-semibold tracking-wide uppercase mb-1">
-            PataFundi
+            Patakazi
           </p>
           <h3 className="text-white text-xl font-display font-semibold mb-6">
-            Find a Fundi Near You
+            Find a Worker Near You
           </h3>
 
           <form className="space-y-4">
@@ -81,7 +81,7 @@ export default function Hero() {
               type="submit"
               className="w-full bg-gold hover:bg-gold-dark text-ink font-semibold text-sm py-3 rounded-card transition-colors shadow-[0_0_20px_rgba(45,212,166,0.4)]"
             >
-              Find Verified Fundis
+              Find Verified Workers
             </button>
           </form>
         </div>

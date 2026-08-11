@@ -74,7 +74,7 @@ export default function AdminPage() {
     <main className="min-h-screen bg-offwhite">
       <section className="bg-navy px-6 md:px-16 py-14">
         <h1 className="text-white text-3xl font-bold">Admin</h1>
-        <p className="text-white/60 text-sm mt-1">Fundi verification & job oversight</p>
+        <p className="text-white/60 text-sm mt-1">Worker verification & job oversight</p>
       </section>
 
       <div className="section">
@@ -85,7 +85,7 @@ export default function AdminPage() {
             tab === "workers" ? "bg-navy text-white" : "bg-white text-ink/60 border border-ink/10"
           }`}
         >
-          Fundis ({workers.length})
+          Workers ({workers.length})
         </button>
         <button
           onClick={() => setTab("jobs")}
@@ -118,7 +118,7 @@ export default function AdminPage() {
                     : "bg-gold hover:bg-gold-dark text-ink"
                 }`}
               >
-                {w.idVerified ? "✓ Verified — click to unverify" : "Verify this fundi"}
+                {w.idVerified ? "✓ Verified — click to unverify" : "Verify this worker"}
               </button>
             </div>
           ))}

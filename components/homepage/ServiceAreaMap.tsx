@@ -25,7 +25,7 @@ export default function ServiceAreaMap() {
         We're growing across Kenya
       </h2>
       <p className="text-ink/60 text-center max-w-lg mx-auto mb-4">
-        Verified fundis are already live in these areas. Don't see yours? We're
+        Verified workers are already live in these areas. Don't see yours? We're
         adding new areas every month.
       </p>
 

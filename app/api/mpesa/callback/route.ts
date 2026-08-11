@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         if (updatedJob.worker) {
           sendSms(
             updatedJob.worker.phone,
-            `PataFundi: Payment of KES ${payment.amount.toLocaleString()} received and held for "${updatedJob.title}". You can start the job.`
+            `Patakazi: Payment of KES ${payment.amount.toLocaleString()} received and held for "${updatedJob.title}". You can start the job.`
           );
         }
       } else {

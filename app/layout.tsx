@@ -4,7 +4,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: "PataFundi — Verified Fundis, Safe Payments, Real Reviews",
+  title: "Patakazi — Verified Workers, Safe Payments, Real Reviews",
   description:
     "Find trusted, verified artisans and domestic workers near you. Rated by real clients, protected by secure payments.",
 };

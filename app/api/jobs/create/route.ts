@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendSms } from "@/lib/sms";
 
 // Takes the logged-in client's authId (not their internal Client.id — the
 // browser only knows the Supabase auth id), looks up their Client row,
@@ -39,7 +40,15 @@ export async function POST(req: NextRequest) {
           },
         },
       },
+      include: { worker: true },
     });
+
+    if (job.worker) {
+      sendSms(
+        job.worker.phone,
+        `Patakazi: New job request "${title}" from ${client.fullName}. Open the app to view and sign the contract.`
+      );
+    }
 
     return NextResponse.json({ job }, { status: 201 });
   } catch (err: any) {

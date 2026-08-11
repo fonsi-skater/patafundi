@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import PortfolioThumbnails from "@/components/search/PortfolioThumbnails";
 
 export default async function SearchWorkersPage({
   searchParams,
@@ -16,7 +17,7 @@ export default async function SearchWorkersPage({
     orderBy: { createdAt: "desc" },
   });
 
-  // Skill suggestions now come from whatever fundis have actually typed at
+  // Skill suggestions now come from whatever workers have actually typed at
   // registration — not a fixed list — so new categories show up here
   // automatically as people join with new kinds of work.
   const allWorkers = await prisma.worker.findMany({
@@ -27,7 +28,7 @@ export default async function SearchWorkersPage({
 
   // Boosted (active featuredUntil) first, then premium, then everyone else —
   // this is where the "Boost Listing" and "Go Premium" payments actually
-  // pay off for the fundi who bought them.
+  // pay off for the worker who bought them.
   const now = new Date();
   const sortedWorkers = [...workers].sort((a, b) => {
     const aBoosted = a.featuredUntil && new Date(a.featuredUntil) > now;
@@ -40,9 +41,9 @@ export default async function SearchWorkersPage({
   return (
     <main className="min-h-screen bg-offwhite">
       <section className="bg-navy px-6 md:px-16 py-14">
-        <h1 className="text-white text-3xl font-bold mb-2">Find a Fundi</h1>
+        <h1 className="text-white text-3xl font-bold mb-2">Find a Worker</h1>
         <p className="text-white/60">
-          {workers.length} verified {workers.length === 1 ? "fundi" : "fundis"} ready to work.
+          {workers.length} verified {workers.length === 1 ? "worker" : "workers"} ready to work.
         </p>
       </section>
 
@@ -90,8 +91,8 @@ export default async function SearchWorkersPage({
       {workers.length === 0 ? (
         <p className="text-ink/50">
           {skill || area
-            ? "No fundis match that search — try clearing a filter."
-            : "No fundis registered yet — be the first!"}{" "}
+            ? "No workers match that search — try clearing a filter."
+            : "No workers registered yet — be the first!"}{" "}
           {!skill && !area && (
             <a href="/register-worker" className="text-gold-dark underline">
               Register here
@@ -147,24 +148,13 @@ export default async function SearchWorkersPage({
               {worker.bio && (
                 <p className="text-sm text-ink/70 leading-relaxed">{worker.bio}</p>
               )}
-              {worker.portfolioImages && worker.portfolioImages.length > 0 && (
-                <div className="flex gap-1.5 mt-3">
-                  {worker.portfolioImages.slice(0, 3).map((url: string) => (
-                    <img
-                      key={url}
-                      src={url}
-                      alt="Work sample"
-                      className="w-14 h-14 rounded object-cover border border-ink/10"
-                    />
-                  ))}
-                </div>
-              )}
+              <PortfolioThumbnails images={worker.portfolioImages} />
               <p className="text-xs text-ink/40 mt-4">{worker.phone}</p>
               <a
                 href={`/post-job?workerId=${worker.id}`}
                 className="mt-4 inline-block bg-navy hover:bg-navy-light text-white text-xs font-semibold px-4 py-2 rounded-card transition-colors"
               >
-                Request This Fundi
+                Request This Worker
               </a>
             </div>
             );

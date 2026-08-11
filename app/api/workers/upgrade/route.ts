@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
     const stkResponse = await initiateStkPush({
       phone: worker.phone,
       amount: PRICES[type],
-      accountReference: `PataFundi-${type}-${worker.id.slice(0, 6)}`,
-      transactionDesc: `PataFundi ${type}`,
+      accountReference: `Patakazi-${type}-${worker.id.slice(0, 6)}`,
+      transactionDesc: `Patakazi ${type}`,
     });
 
     await prisma.subscription.create({

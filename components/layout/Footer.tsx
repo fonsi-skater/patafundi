@@ -4,32 +4,32 @@ export default function Footer() {
       <div className="flex flex-col md:flex-row justify-between gap-6">
         <div>
           <p className="text-white font-display font-bold text-lg mb-1 flex items-center gap-2">
-            <img src="/logo-mark.svg" alt="PataFundi" className="w-6 h-6" />
-            Pata<span className="text-gold">Fundi</span>
+            <img src="/logo-mark.svg" alt="Patakazi" className="w-6 h-6" />
+            Pata<span className="text-gold">kazi</span>
           </p>
-          <p className="text-gold text-xs italic mb-2">Every Fundi Feeds a Family.</p>
+          <p className="text-gold text-xs italic mb-2">Every Worker Feeds a Family.</p>
           <p className="max-w-xs">
-            Verified fundis, secure payments, real reviews — bringing structure
+            Verified workers, secure payments, real reviews — bringing structure
             to Kenya's informal labor market.
           </p>
         </div>
         <div className="flex gap-10">
           <div>
             <p className="text-white font-semibold mb-2">For Clients</p>
-            <p>Find a Fundi</p>
+            <p>Find a Worker</p>
             <p>How It Works</p>
             <p>Post a Job</p>
           </div>
           <div>
-            <p className="text-white font-semibold mb-2">For Fundis</p>
-            <p>Join PataFundi</p>
+            <p className="text-white font-semibold mb-2">For Workers</p>
+            <p>Join Patakazi</p>
             <p>Get Verified</p>
             <p>Pricing</p>
           </div>
         </div>
       </div>
       <p className="mt-8 text-xs text-white/30">
-        &copy; {new Date().getFullYear()} PataFundi. All rights reserved.
+        &copy; {new Date().getFullYear()} Patakazi. All rights reserved.
       </p>
     </footer>
   );

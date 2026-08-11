@@ -1,11 +1,11 @@
-﻿import { Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { testimonials } from "@/lib/mock-data";
 
 export default function Testimonials() {
   return (
     <section className="bg-navy section">
       <h2 className="text-white text-2xl md:text-3xl font-display font-bold text-center mb-12">
-        Trusted by clients and fundis across the country
+        Trusted by clients and workers across the country
       </h2>
 
       <div className="grid md:grid-cols-3 gap-6">

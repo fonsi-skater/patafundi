@@ -7,8 +7,8 @@ import { Menu, X } from "lucide-react";
 const links = [
   { label: "Home", href: "/" },
   { label: "How It Works", href: "/how-it-works" },
-  { label: "Find a Fundi", href: "/search-workers" },
-  { label: "Become a Fundi", href: "/register-worker" },
+  { label: "Find a Worker", href: "/search-workers" },
+  { label: "Become a Worker", href: "/register-worker" },
   { label: "About", href: "/about" },
 ];
 
@@ -19,8 +19,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-navy border-b border-white/10">
       <div className="flex items-center justify-between px-6 md:px-16 py-4">
         <Link href="/" className="flex items-center gap-2 text-white font-display font-bold text-xl tracking-tight">
-          <img src="/logo-mark.svg" alt="PataFundi" className="w-8 h-8" />
-          Pata<span className="text-gold">Fundi</span>
+          <img src="/logo-mark.svg" alt="Patakazi" className="w-8 h-8" />
+          Pata<span className="text-gold">kazi</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-7 text-sm text-white/80">

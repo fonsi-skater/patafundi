@@ -15,6 +15,7 @@ export default function WorkerDashboardPage() {
   const [uploadingPic, setUploadingPic] = useState(false);
   const [uploadingPortfolio, setUploadingPortfolio] = useState(false);
   const [photoError, setPhotoError] = useState<string | null>(null);
+  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(async ({ data }) => {
@@ -144,13 +145,13 @@ export default function WorkerDashboardPage() {
     return (
       <main className="min-h-screen bg-offwhite section text-center">
         <p className="text-ink/70 mb-4">
-          This account isn't registered as a fundi.
+          This account isn't registered as a worker.
         </p>
         <a
           href="/register-worker"
           className="bg-navy text-white px-5 py-2.5 rounded-card text-sm font-semibold"
         >
-          Register as a Fundi
+          Register as a Worker
         </a>
       </main>
     );
@@ -219,7 +220,8 @@ export default function WorkerDashboardPage() {
             <img
               src={worker.profilePicUrl}
               alt={worker.fullName}
-              className="w-16 h-16 rounded-full object-cover border border-ink/10"
+              onClick={() => setLightboxUrl(worker.profilePicUrl)}
+              className="w-16 h-16 rounded-full object-cover border border-ink/10 cursor-pointer hover:opacity-80 transition-opacity"
             />
           ) : (
             <div className="w-16 h-16 rounded-full bg-navy text-white flex items-center justify-center font-bold text-xl">
@@ -249,7 +251,8 @@ export default function WorkerDashboardPage() {
               <img
                 src={url}
                 alt="Portfolio"
-                className="w-20 h-20 rounded-card object-cover border border-ink/10"
+                onClick={() => setLightboxUrl(url)}
+                className="w-20 h-20 rounded-card object-cover border border-ink/10 cursor-pointer hover:opacity-80 transition-opacity"
               />
               <button
                 onClick={() => handleRemovePortfolioImage(url)}
@@ -398,6 +401,28 @@ export default function WorkerDashboardPage() {
         </div>
       )}
       </div>
+
+      {/* Lightbox — click any profile pic or portfolio photo to enlarge */}
+      {lightboxUrl && (
+        <div
+          onClick={() => setLightboxUrl(null)}
+          className="fixed inset-0 bg-black/85 z-[100] flex items-center justify-center p-6 cursor-zoom-out"
+        >
+          <button
+            onClick={() => setLightboxUrl(null)}
+            className="absolute top-6 right-6 text-white/70 hover:text-white text-3xl leading-none"
+            aria-label="Close"
+          >
+            ×
+          </button>
+          <img
+            src={lightboxUrl}
+            alt="Enlarged"
+            onClick={(e) => e.stopPropagation()}
+            className="max-w-full max-h-full rounded-card object-contain cursor-default"
+          />
+        </div>
+      )}
     </main>
   );
 }

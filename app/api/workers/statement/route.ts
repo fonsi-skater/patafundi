@@ -34,8 +34,8 @@ export async function GET(req: NextRequest) {
   });
 
   // --- Header ---
-  doc.fontSize(20).fillColor("#0A1512").text("PataFundi", { continued: false });
-  doc.fontSize(10).fillColor("#666").text("Verified Fundis. Secure Payments. Real Reviews.");
+  doc.fontSize(20).fillColor("#0A1512").text("Patakazi", { continued: false });
+  doc.fontSize(10).fillColor("#666").text("Verified Workers. Secure Payments. Real Reviews.");
   doc.moveDown(1.5);
 
   doc.fontSize(16).fillColor("#0A1512").text("Earnings Statement");
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
   doc.moveDown(1);
 
   doc.fontSize(11).fillColor("#000");
-  doc.text(`Fundi: ${worker.fullName}`);
+  doc.text(`Worker: ${worker.fullName}`);
   doc.text(`Skill: ${worker.skillCategory}`);
   doc.text(`Service area: ${worker.serviceArea}`);
   doc.text(`Phone: ${worker.phone}`);
@@ -95,7 +95,7 @@ export async function GET(req: NextRequest) {
 
   doc.moveDown(2);
   doc.fontSize(8).fillColor("#999").text(
-    "This statement reflects jobs completed and paid through the PataFundi platform. Generated automatically — for verification, contact support@patafundi.com.",
+    "This statement reflects jobs completed and paid through the Patakazi platform. Generated automatically — for verification, contact support@patakazi.com.",
     { width: 495 }
   );
 
@@ -105,7 +105,7 @@ export async function GET(req: NextRequest) {
   return new NextResponse(new Uint8Array(pdfBuffer), {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="patafundi-statement-${worker.fullName.replace(/\s+/g, "-")}.pdf"`,
+      "Content-Disposition": `attachment; filename="patakazi-statement-${worker.fullName.replace(/\s+/g, "-")}.pdf"`,
     },
   });
 }

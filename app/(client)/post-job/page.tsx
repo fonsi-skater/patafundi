@@ -80,7 +80,7 @@ function PostJobForm() {
       <main className="min-h-screen bg-offwhite section text-center">
         <h1 className="text-2xl font-bold text-ink mb-2">Job posted!</h1>
         <p className="text-ink/60 mb-6">
-          A contract has been generated. Both you and the fundi need to
+          A contract has been generated. Both you and the worker need to
           confirm it before any payment moves.
         </p>
         <a
@@ -98,7 +98,7 @@ function PostJobForm() {
       <div className="bg-white rounded-card p-8 max-w-md w-full border border-ink/10 shadow-sm">
         <h1 className="text-2xl font-bold text-ink mb-1">Describe the Job</h1>
         <p className="text-ink/50 text-sm mb-6">
-          This creates a job request for the fundi you selected.
+          This creates a job request for the worker you selected.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -157,7 +157,7 @@ function PostJobForm() {
           </button>
           {!workerId && (
             <p className="text-red-500 text-xs">
-              No fundi selected — go back to search and choose one first.
+              No worker selected — go back to search and choose one first.
             </p>
           )}
         </form>

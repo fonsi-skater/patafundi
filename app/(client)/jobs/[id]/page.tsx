@@ -163,7 +163,7 @@ export default function JobContractPage() {
             <span className="text-ink font-medium">{job.client.fullName}</span>
           </div>
           <div className="flex justify-between border-b border-ink/10 pb-2">
-            <span className="text-ink/50">Fundi</span>
+            <span className="text-ink/50">Worker</span>
             <span className="text-ink font-medium">{job.worker?.fullName ?? "—"}</span>
           </div>
           <div className="flex justify-between border-b border-ink/10 pb-2">
@@ -191,7 +191,7 @@ export default function JobContractPage() {
               job.contract.signedByWorker ? "text-green-600" : "text-ink/40"
             }
           >
-            {job.contract.signedByWorker ? "✓" : "○"} Fundi signed
+            {job.contract.signedByWorker ? "✓" : "○"} Worker signed
           </span>
         </div>
 
@@ -206,7 +206,7 @@ export default function JobContractPage() {
             {job.payment?.status === "held" ? (
               <p className="bg-green-50 text-green-700 border border-green-200 rounded-card px-4 py-3 text-sm font-medium">
                 Payment received — KES {job.payment.amount.toLocaleString()} is
-                held securely and will be released to the fundi once the job
+                held securely and will be released to the worker once the job
                 is confirmed complete.
               </p>
             ) : job.payment?.status === "failed" ? (
@@ -261,14 +261,14 @@ export default function JobContractPage() {
 
             {job.status === "in_progress" && isClient && (
               <p className="text-ink/50 text-sm mt-3">
-                Waiting on the fundi to mark this job as done.
+                Waiting on the worker to mark this job as done.
               </p>
             )}
 
             {job.status === "awaiting_confirmation" && isClient && (
               <div className="mt-3 border border-gold/40 bg-gold/10 rounded-card p-4">
                 <p className="text-sm text-ink/80 mb-3">
-                  The fundi says this job is done. Confirm to release payment.
+                  The worker says this job is done. Confirm to release payment.
                 </p>
                 <button
                   onClick={handleConfirmComplete}
@@ -298,7 +298,7 @@ export default function JobContractPage() {
                 className="mt-4 border border-ink/10 rounded-card p-4 bg-offwhite"
               >
                 <p className="text-sm font-medium text-ink mb-2">
-                  Rate this fundi
+                  Rate this worker
                 </p>
                 <div className="flex gap-1 mb-3">
                   {[1, 2, 3, 4, 5].map((n) => (

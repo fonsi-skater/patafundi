@@ -59,7 +59,7 @@ export default function RegisterClientPage() {
     <main className="min-h-screen bg-navy flex items-center justify-center px-6 py-16">
       <div className="bg-navy-light rounded-card p-8 max-w-md w-full border border-white/10">
         <p className="text-gold text-xs font-semibold uppercase tracking-wide mb-1">
-          Join PataFundi
+          Join Patakazi
         </p>
         <h1 className="text-white text-2xl font-display font-bold mb-6">
           Create a Client Account
