@@ -16,18 +16,22 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
 
-    const { error: authError } = await supabase.auth.signInWithPassword({
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (authError) {
-      setError(authError.message);
+    if (authError || !authData.user) {
+      setError(authError?.message ?? "Login failed.");
       setLoading(false);
       return;
     }
 
-    router.push("/search-workers");
+    // Figure out if this login belongs to a worker or a client, and send
+    // each to the page that's actually relevant to them — a fundi should
+    // land on their own dashboard, not the page for hiring other fundis.
+    const workerCheck = await fetch(`/api/workers/me?authId=${authData.user.id}`);
+    router.push(workerCheck.ok ? "/dashboard" : "/search-workers");
     router.refresh();
   }
 
