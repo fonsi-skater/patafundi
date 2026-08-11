@@ -18,7 +18,7 @@ export default function HowItWorksPage() {
   return (
     <main className="min-h-screen bg-offwhite">
       <section className="bg-navy px-6 md:px-16 py-20 text-center">
-        <h1 className="text-white text-3xl md:text-4xl font-bold">How Patakazi Works</h1>
+        <h1 className="text-white text-3xl md:text-4xl font-bold">How PataKazi Works</h1>
         <p className="text-white/60 mt-3 max-w-xl mx-auto">
           A simple, secure flow for both sides — verified workers, protected payments.
         </p>

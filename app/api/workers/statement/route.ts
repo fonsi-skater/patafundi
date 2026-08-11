@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
   });
 
   // --- Header ---
-  doc.fontSize(20).fillColor("#0A1512").text("Patakazi", { continued: false });
+  doc.fontSize(20).fillColor("#0A1512").text("PataKazi", { continued: false });
   doc.fontSize(10).fillColor("#666").text("Verified Workers. Secure Payments. Real Reviews.");
   doc.moveDown(1.5);
 
@@ -95,7 +95,7 @@ export async function GET(req: NextRequest) {
 
   doc.moveDown(2);
   doc.fontSize(8).fillColor("#999").text(
-    "This statement reflects jobs completed and paid through the Patakazi platform. Generated automatically — for verification, contact support@patakazi.com.",
+    "This statement reflects jobs completed and paid through the PataKazi platform. Generated automatically — for verification, contact support@patakazi.com.",
     { width: 495 }
   );
 

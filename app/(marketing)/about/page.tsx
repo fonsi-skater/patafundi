@@ -3,7 +3,7 @@ export default function AboutPage() {
     <main className="min-h-screen bg-offwhite">
       <section className="bg-navy px-6 md:px-16 py-20 text-center">
         <p className="text-gold text-xs font-semibold uppercase tracking-wide mb-2">
-          About Patakazi
+          About PataKazi
         </p>
         <h1 className="text-white text-3xl md:text-4xl font-bold max-w-2xl mx-auto">
           Bringing structure to Kenya's informal labor market
@@ -19,7 +19,7 @@ export default function AboutPage() {
           doesn't, there's rarely any record to point to.
         </p>
         <p>
-          Patakazi exists to fix that. Every worker on the platform is
+          PataKazi exists to fix that. Every worker on the platform is
           ID-verified. Every review comes from a client who actually paid for
           a completed job — not an anonymous rating. Every job has a simple
           digital contract before any money moves, and payment is held

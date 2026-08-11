@@ -8,7 +8,7 @@ export default function WhyDifferent() {
           You take a risk every time you hire a stranger
         </p>
         <h2 className="text-3xl md:text-4xl font-bold text-ink">
-          Here's why Patakazi is different
+          Here's why PataKazi is different
         </h2>
       </div>
 

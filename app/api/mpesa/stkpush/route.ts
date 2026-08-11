@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     const stkResponse = await initiateStkPush({
       phone,
       amount,
-      accountReference: `Patakazi-${job.id.slice(0, 8)}`,
+      accountReference: `PataKazi-${job.id.slice(0, 8)}`,
       transactionDesc: job.title.slice(0, 20),
     });
 

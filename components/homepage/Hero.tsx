@@ -25,7 +25,7 @@ export default function Hero() {
             READY TO WORK.
           </h1>
           <p className="text-white/70 mt-6 max-w-md text-sm md:text-base">
-            Patakazi connects you with ID-verified artisans and domestic workers
+            PataKazi connects you with ID-verified artisans and domestic workers
             near you — real reviews, secure M-Pesa payment, and a contract on
             record for every job.
           </p>
@@ -45,7 +45,7 @@ export default function Hero() {
         {/* Right: floating "get matched" form — glassmorphic card matching the reference's panel style */}
         <div className="bg-navy-light/80 backdrop-blur-md rounded-card p-6 md:p-8 shadow-2xl border border-gold/20 max-w-md md:justify-self-end w-full">
           <p className="text-gold text-xs font-semibold tracking-wide uppercase mb-1">
-            Patakazi
+            PataKazi
           </p>
           <h3 className="text-white text-xl font-display font-semibold mb-6">
             Find a Worker Near You

@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     if (job.worker) {
       sendSms(
         job.worker.phone,
-        `Patakazi: New job request "${title}" from ${client.fullName}. Open the app to view and sign the contract.`
+        `PataKazi: New job request "${title}" from ${client.fullName}. Open the app to view and sign the contract.`
       );
     }
 

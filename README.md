@@ -1,4 +1,4 @@
-# Patakazi
+# PataKazi
 
 Verified workers. Secure M-Pesa payments. Real reviews. Bringing structure to
 Kenya's informal labor market.
@@ -23,7 +23,7 @@ Then open http://localhost:3000
 - `app/page.tsx` — homepage, sections in the same order as the reference design
 - `components/homepage/Hero.tsx` — hero + floating "find a worker" request form
 - `components/homepage/TrustBadges.tsx` — verified/insured/secure trust strip
-- `components/homepage/WhyDifferent.tsx` — "why Patakazi beats hiring a stranger"
+- `components/homepage/WhyDifferent.tsx` — "why PataKazi beats hiring a stranger"
 - `components/homepage/Testimonials.tsx` — client review cards
 - `components/homepage/ServiceAreaMap.tsx` — free Leaflet/OpenStreetMap coverage map
 - `components/layout/Navbar.tsx`, `Footer.tsx`

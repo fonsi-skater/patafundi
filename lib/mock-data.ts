@@ -13,12 +13,12 @@ export const whyDifferent = [
   {
     title: "Verified, not anonymous",
     description:
-      "Every worker on Patakazi has a confirmed ID and a real work history — not a stranger you found through a poster on a pole.",
+      "Every worker on PataKazi has a confirmed ID and a real work history — not a stranger you found through a poster on a pole.",
   },
   {
     title: "Reviews you can actually trust",
     description:
-      "Only clients who paid for a completed job through Patakazi can leave a review. No fake five-star spam.",
+      "Only clients who paid for a completed job through PataKazi can leave a review. No fake five-star spam.",
   },
   {
     title: "Your money is protected",
@@ -44,7 +44,7 @@ export const testimonials = [
     name: "Otieno M.",
     role: "Property Manager, Ruiru",
     quote:
-      "We use Patakazi for all our maintenance work now. The contract feature means there's no argument about price afterward.",
+      "We use PataKazi for all our maintenance work now. The contract feature means there's no argument about price afterward.",
     rating: 5,
   },
   {

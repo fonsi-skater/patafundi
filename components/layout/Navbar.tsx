@@ -19,8 +19,8 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-navy border-b border-white/10">
       <div className="flex items-center justify-between px-6 md:px-16 py-4">
         <Link href="/" className="flex items-center gap-2 text-white font-display font-bold text-xl tracking-tight">
-          <img src="/logo-mark.svg" alt="Patakazi" className="w-8 h-8" />
-          Pata<span className="text-gold">kazi</span>
+          <img src="/logo-mark.svg" alt="PataKazi" className="w-8 h-8" />
+          Pata<span className="text-gold">Kazi</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-7 text-sm text-white/80">

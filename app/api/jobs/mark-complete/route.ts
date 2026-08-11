@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     sendSms(
       job.client.phone,
-      `Patakazi: "${job.title}" has been marked done by your worker. Log in to confirm and release payment.`
+      `PataKazi: "${job.title}" has been marked done by your worker. Log in to confirm and release payment.`
     );
 
     return NextResponse.json({ ok: true });
