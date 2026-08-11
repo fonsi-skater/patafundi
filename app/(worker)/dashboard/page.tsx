@@ -58,7 +58,7 @@ export default function WorkerDashboardPage() {
       });
       await refetchWorker();
     } catch (err) {
-      setPhotoError("Could not upload photo. Try again.");
+      setPhotoError(err instanceof Error ? err.message : "Could not upload photo. Try again.");
     }
     setUploadingPic(false);
   }
@@ -78,7 +78,7 @@ export default function WorkerDashboardPage() {
       });
       await refetchWorker();
     } catch (err) {
-      setPhotoError("Could not upload photo. Try again.");
+      setPhotoError(err instanceof Error ? err.message : "Could not upload photo. Try again.");
     }
     setUploadingPortfolio(false);
   }

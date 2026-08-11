@@ -20,7 +20,18 @@ export async function uploadToCloudinary(file: File): Promise<string> {
   );
 
   if (!res.ok) {
-    throw new Error("Image upload failed.");
+    // Cloudinary returns a specific, useful reason in the response body
+    // (e.g. "Upload preset not found", "Unsigned uploads are disabled")
+    // — surface that instead of a generic message, so we can actually
+    // see what's wrong without needing DevTools.
+    let reason = `HTTP ${res.status}`;
+    try {
+      const errBody = await res.json();
+      reason = errBody?.error?.message ?? reason;
+    } catch {
+      // response wasn't JSON — fall back to the status code
+    }
+    throw new Error(`Cloudinary upload failed: ${reason}`);
   }
 
   const data = await res.json();
